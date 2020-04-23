@@ -32,7 +32,7 @@ public class MainWindow implements Initializable {
 
     JugadaBase vs;
     private String texto;
-    int ganador = 0;
+    String ganador;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println(url);
@@ -102,17 +102,17 @@ public class MainWindow implements Initializable {
                 System.out.println(piedra.getHeight());
                 System.out.println(vs.getHeight());
 
-                texto = "Gana: " + ganador;
+
+                System.out.println(client.getGanador());
 
                 gc.setFont(new Font("Arial",72));
 
 
-//        audioClip.play();
                 gc.setFill( Color.WHITE );
-                gc.fillText( texto, 680, 682 );
+                gc.fillText( client.getGanador(), 320, 300 );
 
                 gc.setStroke( Color.BLACK );
-                gc.strokeText( texto, 680, 682 );
+                gc.strokeText( client.getGanador(), 320, 300 );
 
                 vs.setPosX(486);
                 vs.render(gc);
@@ -127,11 +127,5 @@ public class MainWindow implements Initializable {
                 e.printStackTrace();
             }
         });
-
-
-//        if (client.getOpcion()!=-1) piedra.clear(gc);
-
-
-
     }
 }
