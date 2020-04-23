@@ -3,6 +3,10 @@ import java.net.*;
 
 public class Client{
     private static volatile int opcion = -1;
+    private int opcionServer = -1;
+    private String ganador = "";
+
+
     public static void main(String[] args) throws IOException, InterruptedException {
 
     }
@@ -25,8 +29,17 @@ public class Client{
         //Enviament del missatge
         socket.send(packet);
 
+        DatagramPacket packet2 = new DatagramPacket(missatge, missatge.length);
+        socket.receive(packet2);
+
+
+        opcionServer = Integer.parseInt((new String(packet2.getData(), 0, packet2.getLength())));
+        System.out.println(opcionServer);
     }
 
+    public int getOpcionServer() {
+        return opcionServer;
+    }
 
     public int getOpcion() {
         return opcion;

@@ -1,3 +1,4 @@
+import javafx.animation.Timeline;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Point2D;
@@ -6,6 +7,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 import sprites.JugadaBase;
 
 import java.io.IOException;
@@ -14,7 +17,6 @@ import java.util.ResourceBundle;
 
 public class MainWindow implements Initializable {
     private Scene scene;
-    Server server = new Server();
     private GraphicsContext gc;
     public Client client = new Client();
     @FXML
@@ -22,6 +24,15 @@ public class MainWindow implements Initializable {
     @FXML
     Canvas mainCanvas;
 
+    JugadaBase piedra;
+    JugadaBase papel;
+    JugadaBase tijeras;
+    JugadaBase lagarto;
+    JugadaBase spock;
+
+    JugadaBase vs;
+    private String texto;
+    int ganador = 0;
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         System.out.println(url);
@@ -31,17 +42,13 @@ public class MainWindow implements Initializable {
 
         gc = mainCanvas.getGraphicsContext2D();
 
+        piedra = new JugadaBase(new Image("images/0.png"));
+        papel = new JugadaBase(new Image("images/1.png"));
+        tijeras = new JugadaBase(new Image("images/2.png"));
+        lagarto = new JugadaBase(new Image("images/3.png"));
+        spock = new JugadaBase(new Image("images/4.png"));
 
-    }
-
-    public void setScene(Scene sc) {
-        scene = sc;
-
-        JugadaBase piedra = new JugadaBase(new Image("images/0.png"));
-        JugadaBase papel = new JugadaBase(new Image("images/1.png"));
-        JugadaBase tijeras = new JugadaBase(new Image("images/2.png"));
-        JugadaBase lagarto = new JugadaBase(new Image("images/3.png"));
-        JugadaBase spock = new JugadaBase(new Image("images/4.png"));
+        vs = new JugadaBase(new Image("images/vs.png"));
 
         piedra.setPosX(200);
         papel.setPosX(336);
@@ -54,6 +61,13 @@ public class MainWindow implements Initializable {
         tijeras.render(gc);
         lagarto.render(gc);
         spock.render(gc);
+
+    }
+
+    public void setScene(Scene sc) {
+        scene = sc;
+
+
 
 
         scene.setOnMouseClicked(mouseEvent -> {
@@ -78,27 +92,45 @@ public class MainWindow implements Initializable {
 
                 client.jugar();
 
-//                gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+                gc.clearRect(0, 0, gc.getCanvas().getWidth(), gc.getCanvas().getHeight());
+
+                if (client.getOpcion()==0)  {piedra.setPosX(372); piedra.render(gc);}
+                if (client.getOpcion()==1)  {papel.setPosX(372); papel.render(gc);}
+                if (client.getOpcion()==2)  {tijeras.setPosX(372); tijeras.render(gc);}
+                if (client.getOpcion()==3)  {lagarto.setPosX(372); lagarto.render(gc);}
+                if (client.getOpcion()==4)  {spock.setPosX(372); spock.render(gc);}
+                System.out.println(piedra.getHeight());
+                System.out.println(vs.getHeight());
+
+                texto = "Gana: " + ganador;
+
+                gc.setFont(new Font("Arial",72));
 
 
-//                if (server.getJugadaServer()==0) piedra.setPosX(572); piedra.render(gc);
-//                if (server.getJugadaServer()==1) papel.setPosX(572); papel.render(gc);
-//                if (server.getJugadaServer()==2) tijeras.setPosX(572); tijeras.render(gc);
-//                if (server.getJugadaServer()==3) lagarto.setPosX(572); lagarto.render(gc);
-//                if (server.getJugadaServer()==4) spock.setPosX(572); spock.render(gc);
+//        audioClip.play();
+                gc.setFill( Color.WHITE );
+                gc.fillText( texto, 680, 682 );
 
+                gc.setStroke( Color.BLACK );
+                gc.strokeText( texto, 680, 682 );
+
+                vs.setPosX(486);
+                vs.render(gc);
+
+                if (client.getOpcionServer()==0) {piedra.setPosX(600); piedra.render(gc);}
+                if (client.getOpcionServer()==1) {papel.setPosX(600); papel.render(gc);}
+                if (client.getOpcionServer()==2) {tijeras.setPosX(600); tijeras.render(gc);}
+                if (client.getOpcionServer()==3) {lagarto.setPosX(600); lagarto.render(gc);}
+                if (client.getOpcionServer()==4) {spock.setPosX(600); spock.render(gc);}
 
             } catch (IOException | InterruptedException e) {
                 e.printStackTrace();
             }
         });
 
+
 //        if (client.getOpcion()!=-1) piedra.clear(gc);
-//        if (client.getOpcion()==0)  piedra.setPosX(372); piedra.render(gc);
-//        if (client.getOpcion()==1)  papel.setPosX(372); papel.render(gc);
-//        if (client.getOpcion()==2)  tijeras.setPosX(372); tijeras.render(gc);
-//        if (client.getOpcion()==3)  lagarto.setPosX(372); lagarto.render(gc);
-//        if (client.getOpcion()==4)  spock.setPosX(372); spock.render(gc);
+
 
 
     }
